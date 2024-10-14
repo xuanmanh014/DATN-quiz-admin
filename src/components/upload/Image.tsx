@@ -86,7 +86,7 @@ const UploadImage: FC<UploadImageProps> = ({
                 type="primary"
                 onClick={() => imageInputRef.current?.click()}
             >
-                Tải ảnh
+                Upload image
             </Button>
         </div>
     );

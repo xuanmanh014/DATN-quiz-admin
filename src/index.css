@@ -3,3 +3,20 @@
     margin: 0;
     box-sizing: border-box;
 }
+
+.btn__delete {
+    color: maroon;
+    cursor: pointer;
+    text-transform: capitalize;
+}
+
+.btn__update {
+    color: darkblue;
+    cursor: pointer;
+    text-transform: capitalize;
+}
+
+.btn__delete:hover,
+.btn__update:hover {
+    text-decoration: underline;
+}

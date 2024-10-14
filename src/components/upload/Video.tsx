@@ -85,7 +85,7 @@ const UploadVideo: FC<UploadVideoProps> = ({
                 type="primary"
                 onClick={() => videoInputRef.current?.click()}
             >
-                Tải video
+                Upload video
             </Button>
         </div>
     );

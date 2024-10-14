@@ -1,10 +1,11 @@
 import { AxiosResponse } from "axios";
-import { useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { useAppContext } from "../../contexts/app";
 
 interface IUseFetchResponse<T> {
     data?: T,
-    refetchData: () => void
+    refetchData: () => void,
+    setData: Dispatch<SetStateAction<T | undefined>>
 }
 
 export const useFetch = <T>(fetchFunction: () => Promise<AxiosResponse<any, any>>): IUseFetchResponse<T> => {
@@ -25,6 +26,8 @@ export const useFetch = <T>(fetchFunction: () => Promise<AxiosResponse<any, any>
     }, []);
 
     return {
-        data, refetchData: getData
+        data,
+        refetchData: getData,
+        setData
     }
 }
