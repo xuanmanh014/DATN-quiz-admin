@@ -5,7 +5,8 @@ const LayoutSidebar = () => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
     const items: MenuProps["items"] = [
-        { key: "/quiz", label: "Quiz" }
+        { key: "/quiz", label: "Quiz" },
+        { key: "/topic", label: "Topic" },
     ];
 
     const onClick: MenuProps["onClick"] = ({ key }: { key: string }) => {

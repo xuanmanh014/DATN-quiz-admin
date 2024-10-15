@@ -20,3 +20,24 @@
 .btn__update:hover {
     text-decoration: underline;
 }
+
+.auth__form-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+}
+
+.auth__form {
+    width: 500px;
+    margin: auto;
+    border: 1px solid lightgray;
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.auth__form h1 {
+    margin-bottom: 1.75rem;
+    text-align: center;
+}

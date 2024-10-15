@@ -22,12 +22,9 @@ const AuthPage = () => {
     }
 
     return (
-        <Row className="w-full h-[100vh]">
-            <Col span={18}>
-                <img src={banner} alt="Auth page's banner" style={{ width: "100%", objectFit: "cover", height: "100%" }} />
-            </Col>
-            <Col span={6} style={{ padding: 20 }}>
-                <h1 className="mb-5">Login</h1>
+        <div className="auth__form-wrapper">
+            <div className="auth__form">
+                <h1>Login</h1>
                 <Form onFinish={onFinish} layout="vertical">
                     <FormItemInput
                         label={"Email"}
@@ -59,9 +56,8 @@ const AuthPage = () => {
                         Login
                     </Button>
                 </Form>
-
-            </Col>
-        </Row>
+            </div>
+        </div>
     )
 }
 

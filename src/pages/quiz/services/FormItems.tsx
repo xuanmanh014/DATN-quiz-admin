@@ -8,6 +8,9 @@ import FormItemTextarea from '../../../components/custom/form/FormItemTextarea'
 import UploadRecord from '../../../components/upload/Record'
 import { Col, Form, FormInstance } from 'antd'
 import IFile from '../../../types/file/index.type'
+import { useFetch } from '../../../hooks/useFetch'
+import { ITopic } from '../../../types/topic/index.type'
+import { TopicApis } from '../../../apis/topic/index.api'
 
 interface IQuizFormItemsProps {
     form: FormInstance
@@ -16,6 +19,7 @@ interface IQuizFormItemsProps {
 
 const QuizFormItems: FC<IQuizFormItemsProps> = ({ form, quizData }) => {
     const [quizType, setQuizType] = useState("listen");
+    const { data: topics } = useFetch<ITopic[]>(TopicApis.getAll);
 
     useEffect(() => {
         if (quizData) {
@@ -74,6 +78,19 @@ const QuizFormItems: FC<IQuizFormItemsProps> = ({ form, quizData }) => {
                 }}
                 rules={[
                     { required: true, message: validateMessage("Quiz score") }
+                ]}
+            />
+
+            <FormItemSelect
+                colSpan={12}
+                name={"quizTopic"}
+                label="Quiz topic"
+                selectProps={{
+                    options: topics?.map(topic => ({ value: topic._id, label: topic.topicName })),
+                    placeholder: commonPlaceholderSelect("Quiz topic"),
+                }}
+                rules={[
+                    { required: true, message: validateMessage("quiz topic") }
                 ]}
             />
 

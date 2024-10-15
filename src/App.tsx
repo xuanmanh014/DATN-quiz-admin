@@ -3,6 +3,7 @@ import RootLayout from "./layouts"
 import QuizPage from "./pages/quiz"
 import { useEffect } from "react";
 import AuthPage from "./pages/auth";
+import TopicPage from "./pages/topic";
 
 function App() {
     const navigate = useNavigate();
@@ -20,6 +21,7 @@ function App() {
             <Route element={accessToken ? <RootLayout /> : <Navigate to={"/auth"} />}>
                 <Route path="/*" element={<QuizPage />} />
                 <Route path="/quiz/*" element={<QuizPage />} />
+                <Route path="/topic/*" element={<TopicPage />} />
             </Route>
 
             <Route path="/auth" element={!accessToken ? <AuthPage /> : <Navigate to={"/quiz"} />} />
