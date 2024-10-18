@@ -6,7 +6,7 @@ const LayoutHeader = () => {
     const { breadCrumb } = useAppContext();
     const items: MenuProps["items"] = [
         { type: "divider" },
-        { key: "logout", label: "Đăng xuất", danger: true },
+        { key: "logout", label: "Logout", danger: true },
     ];
 
     const onClick: MenuProps["onClick"] = ({ key }: { key: string }) => {

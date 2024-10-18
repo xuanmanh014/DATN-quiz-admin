@@ -1,7 +1,6 @@
-import { Button, Col, Form, Row } from "antd"
+import { Button, Form } from "antd"
 import { AuthApis } from "../../apis/auth/index.api"
 import FormItemInput from "../../components/custom/form/FormItemInput"
-import banner from "../../assets/banner.jpeg"
 import FormItemPassword from "../../components/custom/form/FormItemPassword"
 import { useAppContext } from "../../contexts/app"
 import { commonPlaceholderInput, validateMessage } from "../../utils"
@@ -37,7 +36,7 @@ const AuthPage = () => {
                         ]}
                     />
                     <FormItemPassword
-                        label={"Mật khẩu"}
+                        label={"Password"}
                         name={"password"}
                         inputProps={{
                             placeholder: commonPlaceholderInput("password")

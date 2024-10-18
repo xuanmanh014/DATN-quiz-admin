@@ -70,7 +70,7 @@ const QuizPage = () => {
     }
 
     const onFinish = (values: IQuiz) => {
-        if (!values.quizRecord) {
+        if (values.quizType === "listen" && !values.quizRecord) {
             openNotiError(quizData._id ? "Update quiz" : "Create quiz", "Please upload a record!");
             return;
         }

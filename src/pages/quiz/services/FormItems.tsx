@@ -18,19 +18,21 @@ interface IQuizFormItemsProps {
 }
 
 const QuizFormItems: FC<IQuizFormItemsProps> = ({ form, quizData }) => {
-    const [quizType, setQuizType] = useState("listen");
+    const [quizType, setQuizType] = useState(quizData.quizType || "listen");
     const { data: topics } = useFetch<ITopic[]>(TopicApis.getAll);
 
     useEffect(() => {
         if (quizData) {
-            form.setFieldsValue(quizData);
+            form.setFieldsValue({
+                ...quizData,
+                quizTopic: quizData.quizTopic?._id
+            });
         }
     }, [quizData])
 
     const handleAppendRecord = (record?: IFile) => {
         form.setFieldValue("quizRecord", record?._id);
     }
-
 
     const renderQuizType = (quizType?: string) => {
         switch (quizType) {

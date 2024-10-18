@@ -1,4 +1,5 @@
 import IFile from "../file/index.type"
+import { ITopic } from "../topic/index.type"
 
 export interface IQuiz {
     _id?: string
@@ -7,4 +8,5 @@ export interface IQuiz {
     quizRecord?: IFile
     quizAnswer?: string
     quizType?: string
+    quizTopic?: ITopic
 }

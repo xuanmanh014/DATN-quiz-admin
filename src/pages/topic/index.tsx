@@ -9,6 +9,7 @@ import { ExclamationCircleOutlined } from "@ant-design/icons"
 import { commonPlaceholderInput, validateMessage } from "../../utils"
 import FormItemInput from "../../components/custom/form/FormItemInput"
 import { TopicApis } from "../../apis/topic/index.api"
+import FormItemTextarea from "../../components/custom/form/FormItemTextarea"
 
 const TopicPage = () => {
     const { data: topics, refetchData, setData } = useFetch<ITopic[]>(TopicApis.getAll);
@@ -134,8 +135,8 @@ const TopicPage = () => {
                 open={open}
                 title={topicData._id ? "Update topic" : "Create topic"}
                 destroyOnClose
-                onClose={handleCloseForm}
-                width={350}
+                onCancel={handleCloseForm}
+                width={500}
                 footer={null}
                 styles={{
                     body: {
@@ -156,10 +157,19 @@ const TopicPage = () => {
                                 { required: true, message: validateMessage("Topic name") }
                             ]}
                         />
+
+                        <FormItemTextarea
+                            colSpan={24}
+                            name={"topicDescriptions"}
+                            label="Topic descriptions"
+                            inputProps={{
+                                placeholder: commonPlaceholderInput("topic descriptions")
+                            }}
+                        />
                     </Row>
                     <Flex gap={12}>
-                        <Button block type="primary" htmlType="submit">Save</Button>
-                        <Button block onClick={handleCloseForm}>Cancel</Button>
+                        <Button style={{ height: 40 }} block type="primary" htmlType="submit">Save</Button>
+                        <Button style={{ height: 40 }} block onClick={handleCloseForm}>Cancel</Button>
                     </Flex>
                 </Form>
             </Modal>
