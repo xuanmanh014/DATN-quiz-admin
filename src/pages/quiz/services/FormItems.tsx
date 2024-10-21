@@ -6,11 +6,12 @@ import { commonPlaceholderInput, commonPlaceholderSelect, validateMessage } from
 import FormItemNumber from '../../../components/custom/form/FormItemNumber'
 import FormItemTextarea from '../../../components/custom/form/FormItemTextarea'
 import UploadRecord from '../../../components/upload/Record'
-import { Col, Form, FormInstance } from 'antd'
+import { Button, Col, Form, FormInstance, Row } from 'antd'
 import IFile from '../../../types/file/index.type'
 import { useFetch } from '../../../hooks/useFetch'
 import { ITopic } from '../../../types/topic/index.type'
 import { TopicApis } from '../../../apis/topic/index.api'
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 
 interface IQuizFormItemsProps {
     form: FormInstance
@@ -25,7 +26,8 @@ const QuizFormItems: FC<IQuizFormItemsProps> = ({ form, quizData }) => {
         if (quizData) {
             form.setFieldsValue({
                 ...quizData,
-                quizTopic: quizData.quizTopic?._id
+                quizTopic: quizData.quizTopic?._id,
+                segments: quizData.segments
             });
         }
     }, [quizData])
@@ -126,6 +128,57 @@ const QuizFormItems: FC<IQuizFormItemsProps> = ({ form, quizData }) => {
                     { required: true, message: validateMessage("Quiz answer") }
                 ]}
             />
+
+            <p style={{ marginBottom: 10, paddingLeft: 10 }}>Segments</p>
+            <Col span={24} className='form-list__wrapper'>
+                <Form.List name={"segments"} initialValue={[{}]}>
+                    {(fields, { add, remove }) => (
+                        <>
+                            {fields.map(({ key, name, ...restField }) => (
+                                <Row gutter={12} className='form-list__wrapper-inner'>
+                                    <FormItemNumber
+                                        {...restField}
+                                        name={[name, 'startTime']}
+                                        colSpan={8}
+                                        label="Start time"
+                                        rules={[
+                                            { required: true, message: validateMessage("Start time") }
+                                        ]}
+                                    />
+                                    <FormItemNumber
+                                        {...restField}
+                                        name={[name, 'endTime']}
+                                        colSpan={8}
+                                        label="End time"
+                                        rules={[
+                                            { required: true, message: validateMessage("End time") }
+                                        ]}
+                                    />
+                                    <FormItemInput
+                                        {...restField}
+                                        name={[name, 'answer']}
+                                        colSpan={8}
+                                        label="Answer"
+                                        rules={[
+                                            { required: true, message: validateMessage("Answer") }
+                                        ]}
+                                    />
+
+                                    {fields.length > 1 && <Col span={1}>
+                                        <MinusCircleOutlined onClick={() => remove(name)} style={{ marginTop: 10, fontSize: 20 }} />
+                                    </Col>}
+                                </Row>
+                            ))}
+                            <Button
+                                shape='circle'
+                                onClick={() => add()}
+                                icon={<PlusOutlined />}
+                            >
+                            </Button>
+                        </>
+                    )}
+                </Form.List>
+            </Col>
         </>
     )
 }

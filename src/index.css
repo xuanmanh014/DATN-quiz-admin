@@ -41,3 +41,16 @@
     margin-bottom: 1.75rem;
     text-align: center;
 }
+
+.form-list__wrapper {
+    border: 2px dashed lightgray;
+    padding: 20px !important;
+    border-radius: 8px;
+}
+
+.form-list__wrapper-inner {
+    border: 2px dashed lightgray;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
