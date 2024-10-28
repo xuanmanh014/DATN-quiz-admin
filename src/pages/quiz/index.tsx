@@ -10,7 +10,7 @@ import { CiSearch } from "react-icons/ci";
 import { ExclamationCircleOutlined } from "@ant-design/icons"
 
 const QuizPage = () => {
-    const { data: quizs, refetchData, setData } = useFetch<IQuiz[]>(QuizApis.getAll);
+    const { data: quizs, refetchData } = useFetch<IQuiz[]>(QuizApis.getAll);
     const [open, setOpen] = useState(false);
     const [quizData, setQuizData] = useState<IQuiz>({});
     const [form] = Form.useForm();
@@ -101,15 +101,6 @@ const QuizPage = () => {
         }
     }
 
-    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.currentTarget.value;
-        if (value) {
-            setData(prev => mapData(prev)?.filter(item => item.quizName?.toLocaleLowerCase()?.includes(value)));
-        } else {
-            setData(quizs);
-        }
-    }
-
     return (
         <div>
             <Flex justify="space-between" style={{ marginBottom: 20 }}>
@@ -120,7 +111,6 @@ const QuizPage = () => {
                     style={{
                         width: 300
                     }}
-                    onChange={handleSearch}
                     allowClear
                     suffix={<CiSearch />}
                 />

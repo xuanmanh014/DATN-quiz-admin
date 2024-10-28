@@ -129,56 +129,58 @@ const QuizFormItems: FC<IQuizFormItemsProps> = ({ form, quizData }) => {
                 ]}
             />
 
-            <p style={{ marginBottom: 10, paddingLeft: 10 }}>Segments</p>
-            <Col span={24} className='form-list__wrapper'>
-                <Form.List name={"segments"} initialValue={[{}]}>
-                    {(fields, { add, remove }) => (
-                        <>
-                            {fields.map(({ key, name, ...restField }) => (
-                                <Row gutter={12} className='form-list__wrapper-inner'>
-                                    <FormItemNumber
-                                        {...restField}
-                                        name={[name, 'startTime']}
-                                        colSpan={8}
-                                        label="Start time"
-                                        rules={[
-                                            { required: true, message: validateMessage("Start time") }
-                                        ]}
-                                    />
-                                    <FormItemNumber
-                                        {...restField}
-                                        name={[name, 'endTime']}
-                                        colSpan={8}
-                                        label="End time"
-                                        rules={[
-                                            { required: true, message: validateMessage("End time") }
-                                        ]}
-                                    />
-                                    <FormItemInput
-                                        {...restField}
-                                        name={[name, 'answer']}
-                                        colSpan={8}
-                                        label="Answer"
-                                        rules={[
-                                            { required: true, message: validateMessage("Answer") }
-                                        ]}
-                                    />
+            {quizType === "listen" && <>
+                <p style={{ marginBottom: 10, paddingLeft: 10 }}>Segments</p>
+                <Col span={24} className='form-list__wrapper'>
+                    <Form.List name={"segments"} initialValue={[{}]}>
+                        {(fields, { add, remove }) => (
+                            <>
+                                {fields.map(({ key, name, ...restField }) => (
+                                    <Row gutter={12} className='form-list__wrapper-inner'>
+                                        <FormItemNumber
+                                            {...restField}
+                                            name={[name, 'startTime']}
+                                            colSpan={8}
+                                            label="Start time"
+                                            rules={[
+                                                { required: true, message: validateMessage("Start time") }
+                                            ]}
+                                        />
+                                        <FormItemNumber
+                                            {...restField}
+                                            name={[name, 'endTime']}
+                                            colSpan={8}
+                                            label="End time"
+                                            rules={[
+                                                { required: true, message: validateMessage("End time") }
+                                            ]}
+                                        />
+                                        <FormItemInput
+                                            {...restField}
+                                            name={[name, 'answer']}
+                                            colSpan={8}
+                                            label="Answer"
+                                            rules={[
+                                                { required: true, message: validateMessage("Answer") }
+                                            ]}
+                                        />
 
-                                    {fields.length > 1 && <Col span={1}>
-                                        <MinusCircleOutlined onClick={() => remove(name)} style={{ marginTop: 10, fontSize: 20 }} />
-                                    </Col>}
-                                </Row>
-                            ))}
-                            <Button
-                                shape='circle'
-                                onClick={() => add()}
-                                icon={<PlusOutlined />}
-                            >
-                            </Button>
-                        </>
-                    )}
-                </Form.List>
-            </Col>
+                                        {fields.length > 1 && <Col span={1}>
+                                            <MinusCircleOutlined onClick={() => remove(name)} style={{ marginTop: 10, fontSize: 20 }} />
+                                        </Col>}
+                                    </Row>
+                                ))}
+                                <Button
+                                    shape='circle'
+                                    onClick={() => add()}
+                                    icon={<PlusOutlined />}
+                                >
+                                </Button>
+                            </>
+                        )}
+                    </Form.List>
+                </Col>
+            </>}
         </>
     )
 }
