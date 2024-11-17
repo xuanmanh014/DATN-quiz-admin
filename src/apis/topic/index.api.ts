@@ -7,7 +7,7 @@ export const TopicApis = {
     getAll: async () => {
         const response = await Axios_instance.get(url);
 
-        return response.data || [];
+        return response || [];
     },
     getById: async (id?: string) => {
         const response = await Axios_instance.get(`${url}/${id}`);
