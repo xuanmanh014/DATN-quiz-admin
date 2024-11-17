@@ -8,14 +8,20 @@ import QuizFormItems from "./services/FormItems"
 import { useAppContext } from "../../contexts/app"
 import { CiSearch } from "react-icons/ci";
 import { ExclamationCircleOutlined } from "@ant-design/icons"
+import { useDebounceCallback } from "usehooks-ts"
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
 
 const QuizPage = () => {
-    const { data: quizs, refetchData } = useFetch<IQuiz[]>(QuizApis.getAll);
     const [open, setOpen] = useState(false);
     const [quizData, setQuizData] = useState<IQuiz>({});
     const [form] = Form.useForm();
     const { openNotiError, openNotiSuccess, setLoading } = useAppContext();
     const [modal, contextHolder] = Modal.useModal();
+    const [searchParams] = useSearchParams();
+    const search = searchParams.get("search") || "";
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
+    const { data: quizs, refetchData } = useFetch<IQuiz[]>(QuizApis.getAll, { search });
 
     const handleOpenForm = (quiz?: IQuiz) => {
         setOpen(true);
@@ -101,6 +107,18 @@ const QuizPage = () => {
         }
     }
 
+    const onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        if (value) {
+            searchParams.set("search", value);
+        } else {
+            searchParams.delete("search");
+        }
+        navigate(searchParams.toString());
+    }
+
+    const debounced = useDebounceCallback(onSearchChange, 500);
+
     return (
         <div>
             <Flex justify="space-between" style={{ marginBottom: 20 }}>
@@ -111,6 +129,8 @@ const QuizPage = () => {
                     style={{
                         width: 300
                     }}
+                    defaultValue={search}
+                    onChange={(event) => debounced(event)}
                     allowClear
                     suffix={<CiSearch />}
                 />

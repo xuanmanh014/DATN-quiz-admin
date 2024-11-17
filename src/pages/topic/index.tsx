@@ -10,14 +10,20 @@ import { commonPlaceholderInput, validateMessage } from "../../utils"
 import FormItemInput from "../../components/custom/form/FormItemInput"
 import { TopicApis } from "../../apis/topic/index.api"
 import FormItemTextarea from "../../components/custom/form/FormItemTextarea"
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
+import { useDebounceCallback } from "usehooks-ts"
 
 const TopicPage = () => {
-    const { data: topics, refetchData, setData } = useFetch<ITopic[]>(TopicApis.getAll);
     const [open, setOpen] = useState(false);
     const [topicData, setTopicData] = useState<ITopic>({});
     const [form] = Form.useForm();
     const { openNotiError, openNotiSuccess, setLoading } = useAppContext();
     const [modal, contextHolder] = Modal.useModal();
+    const [searchParams] = useSearchParams();
+    const search = searchParams.get("search") || "";
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
+    const { data: topics, refetchData } = useFetch<ITopic[]>(TopicApis.getAll, { search });
 
     const handleOpenForm = (topic?: ITopic) => {
         setOpen(true);
@@ -101,14 +107,17 @@ const TopicPage = () => {
         }
     }
 
-    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.currentTarget.value;
+    const onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
         if (value) {
-            setData(prev => mapData(prev)?.filter(item => item.topicName?.toLocaleLowerCase()?.includes(value)));
+            searchParams.set("search", value);
         } else {
-            setData(topics);
+            searchParams.delete("search");
         }
+        navigate(searchParams.toString());
     }
+
+    const debounced = useDebounceCallback(onSearchChange, 500);
 
     return (
         <div>
@@ -120,7 +129,8 @@ const TopicPage = () => {
                     style={{
                         width: 300
                     }}
-                    onChange={handleSearch}
+                    defaultValue={search}
+                    onChange={(event) => debounced(event)}
                     allowClear
                     suffix={<CiSearch />}
                 />

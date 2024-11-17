@@ -1,11 +1,12 @@
 import Axios_instance from "../../axios/config";
+import { IGetDto } from "../../types/common/index.types";
 import { IQuiz } from "../../types/quiz/index.type";
 
 const url = "/quiz";
 
 export const QuizApis = {
-    getAll: async () => {
-        const response = await Axios_instance.get(url);
+    getAll: async (query?: IGetDto) => {
+        const response = await Axios_instance.get(url, { params: query });
 
         return response.data || [];
     },

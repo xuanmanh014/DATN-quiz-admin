@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { useAppContext } from "../../contexts/app";
+import { IGetDto } from "../../types/common/index.types";
 
 interface IUseFetchResponse<T> {
     data?: T,
@@ -8,13 +9,14 @@ interface IUseFetchResponse<T> {
     setData: Dispatch<SetStateAction<T | undefined>>
 }
 
-export const useFetch = <T>(fetchFunction: () => Promise<AxiosResponse<any, any>>): IUseFetchResponse<T> => {
+export const useFetch = <T>(fetchFunction: (params: IGetDto) => Promise<AxiosResponse<any, any>>, params?: IGetDto): IUseFetchResponse<T> => {
     const [data, setData] = useState<T>();
     const { setLoading } = useAppContext();
+    const { search } = params as IGetDto;
 
     const getData = () => {
         setLoading(true);
-        fetchFunction().then(response => {
+        fetchFunction(params || {}).then(response => {
             setData(response.data.data.map((item: any) => ({ ...item, key: item._id })));
         }).catch((error) => {
             console.log(error);
@@ -23,7 +25,7 @@ export const useFetch = <T>(fetchFunction: () => Promise<AxiosResponse<any, any>
 
     useEffect(() => {
         getData()
-    }, []);
+    }, [search]);
 
     return {
         data,
