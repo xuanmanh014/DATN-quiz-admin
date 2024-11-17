@@ -15,7 +15,7 @@ export const useFetch = <T>(fetchFunction: () => Promise<AxiosResponse<any, any>
     const getData = () => {
         setLoading(true);
         fetchFunction().then(response => {
-            setData(response.data.data.map((item: any) => ({ ...item, key: item._id })));
+            setData(response.data.map((item: any) => ({ ...item, key: item._id })));
         }).catch((error) => {
             console.log(error);
         }).finally(() => setLoading(false));
