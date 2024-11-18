@@ -1,4 +1,4 @@
-import { Button, Flex, Form, Input, Modal, Row, Table } from "antd"
+import { Button, Drawer, Flex, Form, Input, Modal, Row, Table } from "antd"
 import { topicColumns } from "./columns"
 import { useFetch } from "../../hooks/useFetch"
 import { ITopic } from "../../types/topic/index.type"
@@ -6,12 +6,10 @@ import { useState } from "react"
 import { useAppContext } from "../../contexts/app"
 import { CiSearch } from "react-icons/ci";
 import { ExclamationCircleOutlined } from "@ant-design/icons"
-import { commonPlaceholderInput, validateMessage } from "../../utils"
-import FormItemInput from "../../components/custom/form/FormItemInput"
 import { TopicApis } from "../../apis/topic/index.api"
-import FormItemTextarea from "../../components/custom/form/FormItemTextarea"
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { useDebounceCallback } from "usehooks-ts"
+import TopicFormItems from "./services/FormItems"
 
 const TopicPage = () => {
     const [open, setOpen] = useState(false);
@@ -22,14 +20,12 @@ const TopicPage = () => {
     const [searchParams] = useSearchParams();
     const search = searchParams.get("search") || "";
     const navigate = useNavigate();
-    const { pathname } = useLocation();
     const { data: topics, refetchData } = useFetch<ITopic[]>(TopicApis.getAll, { search });
 
     const handleOpenForm = (topic?: ITopic) => {
         setOpen(true);
         if (topic) {
             setTopicData(topic);
-            form.setFieldsValue(topic);
         }
     }
 
@@ -81,6 +77,11 @@ const TopicPage = () => {
     }
 
     const onFinish = (values: ITopic) => {
+        if (!values.topicImage) {
+            openNotiError(topicData._id ? "Update topic" : "Create topic", "Please upload a image!");
+            return;
+        }
+
         setLoading(true);
         if (!topicData._id) {
             TopicApis.create(values).then(() => {
@@ -141,48 +142,30 @@ const TopicPage = () => {
                 columns={topicColumns}
             />
 
-            <Modal
+            <Drawer
                 open={open}
                 title={topicData._id ? "Update topic" : "Create topic"}
                 destroyOnClose
-                onCancel={handleCloseForm}
+                onClose={handleCloseForm}
                 width={500}
-                footer={null}
                 styles={{
                     body: {
                         paddingTop: 20
                     }
                 }}
+                extra={
+                    <Flex gap={12}>
+                        <Button type="primary" onClick={() => form.submit()}>Save</Button>
+                        <Button onClick={handleCloseForm}>Cancel</Button>
+                    </Flex>
+                }
             >
                 <Form form={form} onFinish={onFinish} layout="vertical">
                     <Row gutter={12}>
-                        <FormItemInput
-                            colSpan={24}
-                            name={"topicName"}
-                            label={"Topic name"}
-                            inputProps={{
-                                placeholder: commonPlaceholderInput("topic name")
-                            }}
-                            rules={[
-                                { required: true, message: validateMessage("Topic name") }
-                            ]}
-                        />
-
-                        <FormItemTextarea
-                            colSpan={24}
-                            name={"topicDescriptions"}
-                            label="Topic descriptions"
-                            inputProps={{
-                                placeholder: commonPlaceholderInput("topic descriptions")
-                            }}
-                        />
+                        <TopicFormItems form={form} topicData={topicData} />
                     </Row>
-                    <Flex gap={12}>
-                        <Button style={{ height: 40 }} block type="primary" htmlType="submit">Save</Button>
-                        <Button style={{ height: 40 }} block onClick={handleCloseForm}>Cancel</Button>
-                    </Flex>
                 </Form>
-            </Modal>
+            </Drawer>
 
             {contextHolder}
         </div>

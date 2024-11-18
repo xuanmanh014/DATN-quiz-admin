@@ -20,7 +20,7 @@ interface IQuizFormItemsProps {
 
 const QuizFormItems: FC<IQuizFormItemsProps> = ({ form, quizData }) => {
     const [quizType, setQuizType] = useState(quizData.quizType || "listen");
-    const { data: topics } = useFetch<ITopic[]>(TopicApis.getAll);
+    const { data: topics } = useFetch<ITopic[]>(TopicApis.getAll, { search: "" });
 
     useEffect(() => {
         if (quizData) {

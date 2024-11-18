@@ -59,29 +59,28 @@ const UploadImage: FC<UploadImageProps> = ({
     }
 
     return image?.filePath ? (
-        <div className="upload_preview w-full h-[200px]">
+        <div className="upload_preview">
             <img
                 src={image?.filePath}
                 alt="File"
-                className="w-full h-full rounded-lg"
             />
 
-            <div className="upload__actions flex items-center justify-center gap-4">
+            <div className="upload__actions">
                 <AiOutlineDelete
-                    className="text-[30px]"
+                    style={{ fontSize: 30 }}
                     onClick={() => handleDeleteFile(image?._id)}
                 />
             </div>
         </div>
     ) : (
-        <div className="upload__area rounded-lg p-4 flex items-center justify-center flex-col gap-3 w-full h-[200px]">
+        <div className="upload__area">
             <input
                 type="file"
                 style={{ display: "none" }}
                 ref={imageInputRef}
                 onChange={handleFileSelect}
             />
-            <BsUpload className="text-[30px]" />
+            <BsUpload style={{ fontSize: 30, marginBottom: 20 }} />
             <Button
                 type="primary"
                 onClick={() => imageInputRef.current?.click()}

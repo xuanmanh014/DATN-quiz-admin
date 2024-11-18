@@ -9,7 +9,7 @@ import { useAppContext } from "../../contexts/app"
 import { CiSearch } from "react-icons/ci";
 import { ExclamationCircleOutlined } from "@ant-design/icons"
 import { useDebounceCallback } from "usehooks-ts"
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 
 const QuizPage = () => {
     const [open, setOpen] = useState(false);
@@ -20,7 +20,6 @@ const QuizPage = () => {
     const [searchParams] = useSearchParams();
     const search = searchParams.get("search") || "";
     const navigate = useNavigate();
-    const { pathname } = useLocation();
     const { data: quizs, refetchData } = useFetch<IQuiz[]>(QuizApis.getAll, { search });
 
     const handleOpenForm = (quiz?: IQuiz) => {
@@ -72,7 +71,7 @@ const QuizPage = () => {
                 <p className="btn__update" onClick={() => handleOpenForm(item)}>Update</p>
                 <p className="btn__delete" onClick={() => handleConfirmDelete(item._id)}>Delete</p>
             </Flex>
-        }))
+        }));
     }
 
     const onFinish = (values: IQuiz) => {
@@ -139,6 +138,11 @@ const QuizPage = () => {
             <Table
                 dataSource={mapData(quizs)}
                 columns={quizColumns}
+                pagination={{
+                    defaultCurrent: 1,
+                    pageSize: 10,
+                    defaultPageSize: 10
+                }}
             />
 
             <Drawer

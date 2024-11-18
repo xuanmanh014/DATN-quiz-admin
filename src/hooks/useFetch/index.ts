@@ -9,7 +9,7 @@ interface IUseFetchResponse<T> {
     setData: Dispatch<SetStateAction<T | undefined>>
 }
 
-export const useFetch = <T>(fetchFunction: (params: IGetDto) => Promise<AxiosResponse<any, any>>, params?: IGetDto): IUseFetchResponse<T> => {
+export const useFetch = <T>(fetchFunction: (params?: IGetDto) => Promise<AxiosResponse<any, any>>, params?: IGetDto): IUseFetchResponse<T> => {
     const [data, setData] = useState<T>();
     const { setLoading } = useAppContext();
     const { search } = params as IGetDto;
