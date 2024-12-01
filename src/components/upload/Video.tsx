@@ -66,10 +66,15 @@ const UploadVideo: FC<UploadVideoProps> = ({
             />
 
             <video
-                src={video?.filePath}
-                className="w-full h-[200px] object-cover rounded-lg"
                 controls
-            />
+                className="w-full h-[200px] object-cover rounded-lg"
+            >
+                <source
+                    src={video?.filePath}
+                    type="video/mp4"
+                />
+                Your browser does not support the video tag.
+            </video>
         </div>
     ) : (
         <div className="upload__area rounded-lg p-4 flex items-center justify-center flex-col gap-3 w-full h-[200px]">

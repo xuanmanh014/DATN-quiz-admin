@@ -62,6 +62,9 @@ const AppContextProvider: FC<IAppContextProviderProps> = ({ children }) => {
             case FIRST_LEVEL_PATH.TOPIC:
                 setBreadCrumb("All topic");
                 break;
+            case FIRST_LEVEL_PATH.LEARN_VIDEO:
+                setBreadCrumb("All learn video");
+                break;
             default:
                 setBreadCrumb("");
                 break;

@@ -4,6 +4,7 @@ import QuizPage from "./pages/quiz"
 import { useEffect } from "react";
 import AuthPage from "./pages/auth";
 import TopicPage from "./pages/topic";
+import LearnVideoPage from "./pages/learn-video";
 
 function App() {
     const navigate = useNavigate();
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/*" element={<QuizPage />} />
                 <Route path="/quiz/*" element={<QuizPage />} />
                 <Route path="/topic/*" element={<TopicPage />} />
+                <Route path="/learn-video/*" element={<LearnVideoPage />} />
             </Route>
 
             <Route path="/auth" element={!accessToken ? <AuthPage /> : <Navigate to={"/quiz"} />} />

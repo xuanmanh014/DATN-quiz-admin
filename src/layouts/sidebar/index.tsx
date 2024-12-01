@@ -7,6 +7,7 @@ const LayoutSidebar = () => {
     const items: MenuProps["items"] = [
         { key: "/quiz", label: "Quiz" },
         { key: "/topic", label: "Topic" },
+        { key: "/learn-video", label: "Learn video" },
     ];
 
     const onClick: MenuProps["onClick"] = ({ key }: { key: string }) => {
