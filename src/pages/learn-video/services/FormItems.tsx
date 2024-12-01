@@ -16,6 +16,8 @@ interface ILearnVideoFormItemsProps {
 }
 
 const LearnVideoFormItems: FC<ILearnVideoFormItemsProps> = ({ form, learnVideoData }) => {
+    const sectionEndTimes = Form.useWatch(['videoSections'], form);
+    const isAddButtonDisabled = sectionEndTimes?.[sectionEndTimes.length - 1]?.end === undefined;
 
     useEffect(() => {
         if (learnVideoData) {
@@ -72,45 +74,66 @@ const LearnVideoFormItems: FC<ILearnVideoFormItemsProps> = ({ form, learnVideoDa
             <p style={{ marginBottom: 10, paddingLeft: 10 }}>Video's sections</p>
             <Col span={24} className='form-list__wrapper'>
                 <Form.List name={"videoSections"} initialValue={[{}]}>
-                    {(fields, { add, remove }) => (
-                        <>
-                            {fields.map(({ key, name, ...restField }) => (
-                                <Row gutter={12} className='form-list__wrapper-inner'>
-                                    <FormItemNumber
-                                        {...restField}
-                                        name={[name, 'start']}
-                                        colSpan={8}
-                                        label="Start time"
-                                        rules={[
-                                            { required: true, message: validateMessage("Start time") }
-                                        ]}
-                                    />
-                                    <FormItemNumber
-                                        {...restField}
-                                        name={[name, 'end']}
-                                        colSpan={8}
-                                        label="End time"
-                                        rules={[
-                                            { required: true, message: validateMessage("End time") }
-                                        ]}
-                                    />
-                                    <Col span={24}>
-                                        <SegmentFormItems formListFieldData={{ key, name, ...restField }} />
-                                    </Col>
+                    {(fields, { add, remove }) => {
+                        return (
+                            <>
+                                {fields.map(({ key, name, ...restField }, index) => {
+                                    const prevSectionEndTime = name > 0 ? form.getFieldValue(['videoSections', name - 1, 'end']) : 0;
 
-                                    {fields.length > 1 && <Col span={1}>
-                                        <MinusCircleOutlined onClick={() => remove(name)} style={{ marginTop: 10, fontSize: 20 }} />
-                                    </Col>}
-                                </Row>
-                            ))}
-                            <Button
-                                shape='circle'
-                                onClick={() => add()}
-                                icon={<PlusOutlined />}
-                            >
-                            </Button>
-                        </>
-                    )}
+                                    return (
+                                        <Row gutter={12} className='form-list__wrapper-inner'>
+                                            <FormItemNumber
+                                                {...restField}
+                                                name={[name, 'start']}
+                                                colSpan={8}
+                                                label="Start time"
+                                                initialValue={prevSectionEndTime}
+                                                inputProps={{
+                                                    disabled: true
+                                                }}
+                                            />
+                                            <FormItemNumber
+                                                {...restField}
+                                                name={[name, 'end']}
+                                                colSpan={8}
+                                                label="End time"
+                                                rules={[
+                                                    { required: true, message: validateMessage('End time') },
+                                                    {
+                                                        validator(_, value) {
+                                                            const startTime = form.getFieldValue(['videoSections', name, 'start']);
+                                                            if (value <= startTime) {
+                                                                return Promise.reject(new Error('End time must be greater than start time.'));
+                                                            }
+                                                            return Promise.resolve();
+                                                        },
+                                                    },
+                                                ]}
+                                            />
+                                            <Col span={24}>
+                                                <SegmentFormItems
+                                                    form={form}
+                                                    formListFieldData={{ key, name, ...restField }}
+                                                    sectionStartTime={index === 0 ? 0 : prevSectionEndTime}
+                                                />
+                                            </Col>
+
+                                            {fields.length > 1 && <Col span={1}>
+                                                <MinusCircleOutlined onClick={() => remove(name)} style={{ marginTop: 10, fontSize: 20 }} />
+                                            </Col>}
+                                        </Row>
+                                    )
+                                })}
+                                <Button
+                                    shape='circle'
+                                    onClick={() => add()}
+                                    icon={<PlusOutlined />}
+                                    disabled={isAddButtonDisabled}
+                                >
+                                </Button>
+                            </>
+                        )
+                    }}
                 </Form.List>
             </Col>
         </>
