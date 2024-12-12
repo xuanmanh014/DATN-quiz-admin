@@ -49,10 +49,10 @@ const SegmentFormItems: FC<ISegmentFormItemsProps> = ({ form, formListFieldData,
                                                     {
                                                         validator(_, value) {
                                                             const startTime = form.getFieldValue(['videoSections', formListFieldData.name, 'segments', name, 'start']);
-                                                            const segmentEndTime = name > 0 ? form.getFieldValue(['videoSections', formListFieldData.name, 'segments', name, 'end']) : sectionStartTime;
+                                                            const sectionEndTime = name > 0 ? form.getFieldValue(['videoSections', formListFieldData.name, 'end']) : 0;
                                                             if (value <= startTime) {
                                                                 return Promise.reject(new Error('End time must be greater than start time.'));
-                                                            } else if (value >= segmentEndTime) {
+                                                            } else if (value > sectionEndTime) {
                                                                 return Promise.reject(new Error('End time must be less than end time of section.'));
                                                             }
                                                             return Promise.resolve();
